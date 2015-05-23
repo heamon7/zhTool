@@ -19,10 +19,10 @@ for questionIndex in range(0,5+1):
 
 print "length of  questionIdSet: %s" %str(len(questionIdSet))
 
-with open('/home/heamon7/Project/questionId.csv','w') as questionId:
+with open('/home/heamon7/Project/questionIdCSV.csv','w') as questionIdCSV:
     # fieldnames = ['questionId','isTopQuestion','questionAnswerCount','questionFollowerCount']
-    questionInfoWriter = csv.writer(questionId,delimiter=' ')
-    for questionInfo in questionId:
+    questionInfoWriter = csv.writer(questionIdCSV,delimiter=' ')
+    for questionInfo in questionIdSet:
         questionInfoWriter.writerow(questionInfo)
 
 for questionId in questionIdSet:
