@@ -19,11 +19,11 @@ for questionIndex in range(0,100+1):
 
 print "length of  questionIdSet: %s" %str(len(questionIdSet))
 
-# with open('/home/heamon7/Project/questionIdCSV.csv','w') as questionIdCSV:
-#     # fieldnames = ['questionId','isTopQuestion','questionAnswerCount','questionFollowerCount']
-#     questionInfoWriter = csv.writer(questionIdCSV,delimiter=' ')
-#     for questionInfo in questionIdCSV:
-#         questionInfoWriter.writerow(questionInfo)
+with open('/home/heamon7/Project/questionIdCSV.csv','w') as questionIdCSV:
+    # fieldnames = ['questionId','isTopQuestion','questionAnswerCount','questionFollowerCount']
+    questionInfoWriter = csv.writer(questionIdCSV,delimiter=' ')
+    for questionInfo in questionIdCSV:
+        questionInfoWriter.writerow([questionInfo])
 
 for questionId in questionIdSet:
     res =client3.get(str(questionId))
