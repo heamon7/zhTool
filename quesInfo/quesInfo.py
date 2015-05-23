@@ -14,7 +14,7 @@ questionInfoList =[]
 totalCount = int(client2.get('totalCount'))
 print "totalCount: %s\n" %str(totalCount)
 
-for questionIndex in range(0,100+1):
+for questionIndex in range(0,totalCount+1):
     questionIdSet.add(int(client2.get(str(questionIndex))[0]))
 
 print "length of  questionIdSet: %s" %str(len(questionIdSet))
