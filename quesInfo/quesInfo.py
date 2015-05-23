@@ -14,18 +14,18 @@ questionInfoList =[]
 totalCount = int(client2.get('totalCount'))
 print "totalCount: %s\n" %str(totalCount)
 
-for questionIndex in range(0,5+1):
+for questionIndex in range(0,100+1):
     questionIdSet.add(int(client2.get(str(questionIndex))[0]))
 
 print "length of  questionIdSet: %s" %str(len(questionIdSet))
 
-with open('/home/heamon7/Project/questionIdCSV.csv','w') as questionIdCSV:
-    # fieldnames = ['questionId','isTopQuestion','questionAnswerCount','questionFollowerCount']
-    questionInfoWriter = csv.writer(questionIdCSV,delimiter=' ')
-    for questionInfo in questionIdSet:
-        questionInfoWriter.writerow(questionInfo)
+# with open('/home/heamon7/Project/questionIdCSV.csv','w') as questionIdCSV:
+#     # fieldnames = ['questionId','isTopQuestion','questionAnswerCount','questionFollowerCount']
+#     questionInfoWriter = csv.writer(questionIdCSV,delimiter=' ')
+#     for questionInfo in questionIdCSV:
+#         questionInfoWriter.writerow(questionInfo)
 
-for questionId in [i for i in questionIdSet]:
+for questionId in questionIdSet:
     res =client3.get(str(questionId))
     if res :
        res = np.array(res)[[1,3,4]]
