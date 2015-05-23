@@ -25,7 +25,7 @@ with open('/home/heamon7/Project/questionIdCSV.csv','w') as questionIdCSV:
     for questionInfo in questionIdSet:
         questionInfoWriter.writerow(questionInfo)
 
-for questionId in questionIdSet:
+for questionId in [i for i in questionIdSet]:
     res =client3.get(str(questionId))
     if res :
        res = np.array(res)[[1,3,4]]
