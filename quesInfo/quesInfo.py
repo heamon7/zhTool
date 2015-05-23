@@ -19,13 +19,27 @@ for questionIndex in range(0,5+1):
 
 print "length of  questionIdSet: %s" %str(len(questionIdSet))
 
-for questionId in questionIdSet:
-    res = np.array(client3.get(str(questionId)))[[1,3,4]]
-    questionInfoList.append(np.insert(res,0,int(questionId)))
+with open('/home/heamon7/Project/questionId.csv','w') as questionId:
+    # fieldnames = ['questionId','isTopQuestion','questionAnswerCount','questionFollowerCount']
+    questionInfoWriter = csv.writer(questionId,delimiter=' ')
+    for questionInfo in questionId:
+        questionInfoWriter.writerow(questionInfo)
 
-with open('/home/heamon7/Project/localDB.csv','w') as localDB:
-    fieldnames = ['questionId','isTopQuestion','questionAnswerCount','questionFollowerCount']
-    questionInfoWriter = csv.writer(localDB,delimiter=' ')
+for questionId in questionIdSet:
+    res =client3.get(str(questionId))
+    if res :
+       res = np.array(res)[[1,3,4]]
+       questionInfoList.append(np.insert(res,0,int(questionId)))
+    else :
+        pass
+
+print "length of  questionInfoList: %s" %str(len(questionInfoList))
+
+
+
+with open('/home/heamon7/Project/questionInfoCSV.csv','w') as questionInfoCSV:
+    # fieldnames = ['questionId','isTopQuestion','questionAnswerCount','questionFollowerCount']
+    questionInfoWriter = csv.writer(questionInfoCSV,delimiter=' ')
     for questionInfo in questionInfoList:
         questionInfoWriter.writerow(questionInfo)
 
