@@ -49,7 +49,7 @@ for tableIndex in range(dbPrime):
         for ques in quesRet:
             questionId = str(ques.get('questionId'))
             if client1.get(str(questionId)):
-                ques.set("flag",2)
+                ques.set("flag",3)
                 try:
                     ques.save()
                 except:
