@@ -82,7 +82,7 @@ for tableIndex in range(1):
 
 
 
-    print 'table finished with tableIndexStr: %s\n' % str(tableIndexStr)
+    print '[%s] table finished with tableIndexStr: %s\n' % (datetime.now(),str(tableIndexStr))
 
 print 'Finished All,with totalQuestion : %s\n' %str(totalQuestion)
 print "the total counts of repeat question : %s\n" %str(repeatQuestionCount)
