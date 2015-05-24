@@ -62,7 +62,7 @@ for tableIndex in range(1):
                             print e
                             print ques.get('questionId')
 
-                repeatQuestionCount =repeatQuestionCount=1
+                repeatQuestionCount =repeatQuestionCount+1
                 pass
             else:
                 client1.incr('totalCount',1)
