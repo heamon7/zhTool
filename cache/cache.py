@@ -15,7 +15,7 @@ totalQuestion=0
 repeatQuestionCount=0
 
 
-for tableIndex in range(1):
+for tableIndex in range(dbPrime):
     if tableIndex < 10:
         tableIndexStr = '0' + str(tableIndex)
     else:
@@ -40,7 +40,7 @@ for tableIndex in range(1):
         query.limit(queryLimit)
         query.skip(index*queryLimit)
 
-        query.select('questionTimeStamp')
+        query.select('questionTimestamp')
         query.select('tableIndex')
         query.select('questionId')
 
@@ -49,7 +49,7 @@ for tableIndex in range(1):
         for ques in quesRet:
             questionId = str(ques.get('questionId'))
             if client1.get(str(questionId)):
-                ques.set("flag",1)
+                ques.set("flag",2)
                 try:
                     ques.save()
                 except:
@@ -72,7 +72,7 @@ for tableIndex in range(1):
 
                 questionInfoList.append(str(questionIndex))
                 questionInfoList.append(str(ques.get('tableIndex')))
-                questionInfoList.append(str(ques.get('questionTimeStamp')))
+                questionInfoList.append(str(ques.get('questionTimestamp')))
                 client1.set(str(questionId),questionInfoList)
 
                 client2.set(str(questionIndex),int(questionId))
@@ -82,7 +82,7 @@ for tableIndex in range(1):
 
 
 
-    print '[%s] table finished with tableIndexStr: %s\n' % (datetime.now(),str(tableIndexStr))
+    print '[%s] table finished with tableIndexStr: %s' % (datetime.now(),str(tableIndexStr))
+    print "the accumulate counts of repeat question : %s" %str(repeatQuestionCount)
 
-print 'Finished All,with totalQuestion : %s\n' %str(totalQuestion)
-print "the total counts of repeat question : %s\n" %str(repeatQuestionCount)
+print 'Finished All,with totalQuestion : %s' %str(totalQuestion)
