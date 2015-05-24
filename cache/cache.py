@@ -7,11 +7,15 @@ from datetime import datetime
 import re
 
 leancloud.init('8scc82ncveedyt6p8ilcz2auzoahzvpu2y800m5075f9flp9', master_key='06vseo6z44ummz0fgv0u6no7vnzqr4fbob0y2mxz6cv47p92')
-client = bmemcached.Client(('d69c4508ccc94dc4.m.cnbjalinu16pub001.ocs.aliyuncs.com:11211'),'d69c4508ccc94dc4')
+client1 = bmemcached.Client(('aa41ddf13b914084.m.cnbjalinu16pub001.ocs.aliyuncs.com:11211'),'aa41ddf13b914084','Zhihu7771')
+client2 = bmemcached.Client(('aa41ddf13b914084.m.cnbjalinu16pub001.ocs.aliyuncs.com:11211'),'aa41ddf13b914084','Zhihu7771')
 dbPrime = 97
 
+totalQuestion=0
+repeatQuestionCount=0
 
-for tableIndex in range(dbPrime):
+
+for tableIndex in range(1):
     if tableIndex < 10:
         tableIndexStr = '0' + str(tableIndex)
     else:
@@ -19,42 +23,66 @@ for tableIndex in range(dbPrime):
 
     Question = Object.extend('Question' + tableIndexStr)
     query = Query(Question)
-    query.exists('questionLinkHref')
+    query.exists('questionId')
     #curTime = datetime.now()
     #query.less_than('createdAt',curTime)
     questionNum = query.count()
+    totalQuestion =totalQuestion+questionNum
     #print "questionNums: %s" %str(questionNum)
     queryLimit = 700
     queryTimes = questionNum/queryLimit + 1
-    urls = []
+
     for index in range(queryTimes):
         query = Query(Question)
         #query.less_than('createdAt',Question)
-        query.exists('questionLinkHref')
+        query.exists('questionId')
         query.descending('createdAt')
         query.limit(queryLimit)
         query.skip(index*queryLimit)
-        #query.select('questionLinkHref')
+
+        query.select('questionTimeStamp')
+        query.select('tableIndex')
+        query.select('questionId')
+
         quesRet = query.find()
 
         for ques in quesRet:
-            quesCacheList =[]
-            quesCacheList.append(ques.get('tableIndex'))
-            quesCacheList.append(ques.get('answerCount'))
-            if ques.get('isTopQuestion') == 'true':
-                quesCacheList.append(1)
+            questionId = str(ques.get('questionId'))
+            if client1.get(str(questionId)):
+                ques.set("flag",1)
+                try:
+                    ques.save()
+                except:
+                    try:
+                        ques.save()
+                    except:
+                        try:
+                            ques.save()
+                        except LeanCloudError,e:
+                            print e
+                            print ques.get('questionId')
+
+                repeatQuestionCount =repeatQuestionCount=1
+                pass
             else:
-                quesCacheList.append(0)
-            quesCacheList.append(int(ques.get('quesTimestamp')))
-            questionIdStr = re.split('/question/',str)[1]
-            try:
-                ques.set('questionId',questionIdStr)
-                ques.save()
-            except LeanCloudError,e:
-                print e
-            client.set(questionIdStr,quesCacheList)
-            client.incr('totalCount',1)
+                client1.incr('totalCount',1)
+                questionIndex = client2.incr('totalCount',1)
 
-    print 'table finished: %s\n' % tableIndexStr
+                questionInfoList =[]
 
-print 'Finished All'
+                questionInfoList.append(str(questionIndex))
+                questionInfoList.append(str(ques.get('tableIndex')))
+                questionInfoList.append(str(ques.get('questionTimeStamp')))
+                client1.set(str(questionId),questionInfoList)
+
+                client2.set(str(questionIndex),int(questionId))
+
+
+
+
+
+
+    print 'table finished with tableIndexStr: %s\n' % str(tableIndexStr)
+
+print 'Finished All,with totalQuestion : %s\n' %str(totalQuestion)
+print "the total counts of repeat question : %s\n" %str(repeatQuestionCount)
