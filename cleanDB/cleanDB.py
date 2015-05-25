@@ -12,7 +12,7 @@ leancloud.init('8scc82ncveedyt6p8ilcz2auzoahzvpu2y800m5075f9flp9', master_key='0
 dbPrime = 97
 
 totalQuestion=0
-repeatQuestionCount=0
+delRepeatQuestionCount=0
 
 
 for tableIndex in range(dbPrime):
@@ -24,71 +24,37 @@ for tableIndex in range(dbPrime):
     Question = Object.extend('Question' + tableIndexStr)
     query = Query(Question)
     query.equal_to('flag',3)
-    #curTime = datetime.now()
-    #query.less_than('createdAt',curTime)
-    try:
-        query.destroy_all()
-    except:
-        try:
-            query.destroy_all()
-        except LeanCloudError,e:
-            print e
-
-    # questionNum = query.count()
-    # totalQuestion =totalQuestion+questionNum
-    # #print "questionNums: %s" %str(questionNum)
-    # queryLimit = 700
-    # queryTimes = questionNum/queryLimit + 1
-    #
-    # for index in range(queryTimes):
-    #     query = Query(Question)
-    #     #query.less_than('createdAt',Question)
-    #     query.equal_to('flag',3)
-    #     query.descending('createdAt')
-    #     query.limit(queryLimit)
-    #     query.skip(index*queryLimit)
-    #
-    #
-    #     query.destroy_all()
-
-        # for ques in quesRet:
-        #     ques.destroy
-        #     questionId = str(ques.get('questionId'))
-        #     if client1.get(str(questionId)):
-        #         ques.set("flag",3)
-        #         try:
-        #             ques.save()
-        #         except:
-        #             try:
-        #                 ques.save()
-        #             except:
-        #                 try:
-        #                     ques.save()
-        #                 except LeanCloudError,e:
-        #                     print e
-        #                     print ques.get('questionId')
-        #
-        #         repeatQuestionCount =repeatQuestionCount+1
-        #         pass
-        #     else:
-        #         client1.incr('totalCount',1)
-        #         questionIndex = client2.incr('totalCount',1)
-        #
-        #         questionInfoList =[]
-        #
-        #         questionInfoList.append(str(questionIndex))
-        #         questionInfoList.append(str(ques.get('tableIndex')))
-        #         questionInfoList.append(str(ques.get('questionTimestamp')))
-        #         client1.set(str(questionId),questionInfoList)
-        #
-        #         client2.set(str(questionIndex),int(questionId))
 
 
+    questionNum = query.count()
+    #print "questionNums: %s" %str(questionNum)
+    queryLimit = 700
+    queryTimes = questionNum/queryLimit + 1
 
+    for index in range(queryTimes):
+        query = Query(Question)
+        #query.less_than('createdAt',Question)
+        query.equal_to('flag',3)
+        query.descending('createdAt')
+        query.limit(queryLimit)
+        query.skip(index*queryLimit)
+        quesRet = query.find()
+        for ques in quesRet:
+            try:
+                ques.destroy()
+            except:
+                try:
+                    ques.destroy()
+                except:
+                    try:
+                        ques.destroy()
+                    except LeanCloudError,e:
+                        print e
+                        print ques.get('questionId')
 
-
-
+            delRepeatQuestionCount =delRepeatQuestionCount+1
+                pass
     print '[%s] table finished with tableIndexStr: %s' % (datetime.now(),str(tableIndexStr))
-#     print "the accumulate counts of repeat question : %s" %str(repeatQuestionCount)
+    print "the accumulate counts of del repeat question : %s" %str(delRepeatQuestionCount)
 #
 print 'Finished All'
