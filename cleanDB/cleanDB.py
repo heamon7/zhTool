@@ -37,7 +37,7 @@ for tableIndex in range(dbPrime):
         query.equal_to('flag',3)
         query.descending('createdAt')
         query.limit(queryLimit)
-        query.skip(index*queryLimit)
+        # query.skip(index*queryLimit)
         quesRet = query.find()
         for ques in quesRet:
             try:
