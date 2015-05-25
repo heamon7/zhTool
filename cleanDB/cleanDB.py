@@ -53,7 +53,7 @@ for tableIndex in range(dbPrime):
                         print ques.get('questionId')
 
             delRepeatQuestionCount =delRepeatQuestionCount+1
-                pass
+
     print '[%s] table finished with tableIndexStr: %s' % (datetime.now(),str(tableIndexStr))
     print "the accumulate counts of del repeat question : %s" %str(delRepeatQuestionCount)
 #
