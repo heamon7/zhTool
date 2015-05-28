@@ -17,7 +17,7 @@ successCount =0
 
 totalCount = int(client2.get('totalCount'))
 print "totalCount: %s\n" %str(totalCount)
-for questionIndex in range(0,totalCount+1):
+for questionIndex in range(0,5):
     questionId = client2.get(str(questionIndex))
     tableIndex = int(client1.get(str(questionId))[1])
 
@@ -44,8 +44,9 @@ for questionIndex in range(0,totalCount+1):
                     print e
                     print questionIndex
 
+    if (questionIndex%1 ==0):
 
-    print '[%s] table finished with tableIndexStr: %s' % (datetime.now(),str(tableIndexStr))
-    print "the accumulate counts of success question : %s" %str(successCount)
+        print '[%s] the accumulate counts of question finished : %s' % (datetime.now(),str(questionIndex))
+        print "the accumulate counts of success question : %s" %str(successCount)
 #
 print 'Finished All'
