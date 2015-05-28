@@ -17,7 +17,7 @@ successCount =0
 
 totalCount = int(client2.get('totalCount'))
 print "totalCount: %s\n" %str(totalCount)
-for questionIndex in range(0,5):
+for questionIndex in range(0,totalCount+1):
     questionId = client2.get(str(questionIndex))
     tableIndex = int(client1.get(str(questionId))[1])
 
@@ -33,9 +33,11 @@ for questionIndex in range(0,5):
         questionListRet[0].set('questionIndex',questionIndex)
         try:
             questionListRet[0].save()
+            successCount = successCount +1
         except:
             try:
                 questionListRet[0].save()
+                successCount = successCount +1
             except:
                 try:
                     questionListRet[0].save()
@@ -44,7 +46,8 @@ for questionIndex in range(0,5):
                     print e
                     print questionIndex
 
-    if (questionIndex%1 ==0):
+
+    if (questionIndex%10000 ==0):
 
         print '[%s] the accumulate counts of question finished : %s' % (datetime.now(),str(questionIndex))
         print "the accumulate counts of success question : %s" %str(successCount)
