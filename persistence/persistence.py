@@ -28,7 +28,19 @@ for questionIndex in range(0,totalCount+1):
     Question = Object.extend('Question' + tableIndexStr)
     query = Query(Question)
     query.equal_to('questionId',str(questionId))
-    questionListRet = query.find()
+    try:
+        questionListRet = query.find()
+    except:
+        try:
+            questionListRet = query.find()
+        except:
+            try:
+                questionListRet = query.find()
+            except LeanCloudError,e:
+                questionListRet =[]
+                print e
+                print questionIndex
+
     if questionListRet:
         questionListRet[0].set('questionIndex',questionIndex)
         try:
